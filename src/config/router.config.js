@@ -47,7 +47,7 @@ export const asyncRouterMap = [
             path: '/account/settings',
             name: 'settings',
             component: () => import('@/views/account/settings/Index'),
-            meta: { title: '个人设置', hideHeader: true, permission: ['user'] },
+            meta: { title: '个人设置', hideHeader: true },
             redirect: '/account/settings/base',
             hideChildrenInMenu: true,
             children: [
@@ -55,7 +55,7 @@ export const asyncRouterMap = [
                 path: '/account/settings/base',
                 name: 'BaseSettings',
                 component: () => import('@/views/account/settings/BaseSetting'),
-                meta: { title: '基本设置', hidden: true, permission: ['user'] }
+                meta: { title: '基本设置', hidden: true }
               },
               {
                 path: '/account/settings/security',

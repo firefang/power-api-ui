@@ -128,7 +128,7 @@
 <script>
 import moment from 'moment'
 import { timeFix } from '@/utils/util'
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 
 import { PageView } from '@/layouts'
 import { TagCloud } from '@/components'
@@ -161,13 +161,11 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      nickname: (state) => state.user.nickname,
-      welcome: (state) => state.user.welcome
-    }),
-    userInfo () {
-      return this.$store.getters.userInfo
-    }
+    ...mapGetters([
+      'nickname',
+      'welcome',
+      'userInfo'
+    ])
   },
   created () {
     this.user = this.userInfo
