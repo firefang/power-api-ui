@@ -1,4 +1,4 @@
-import { UserLayout, BasicLayout, RouteView } from '@/layouts'
+import { UserLayout, BasicLayout, RouteView, PageView } from '@/layouts'
 import { bxAnaalyse } from '@/core/icons'
 
 export const asyncRouterMap = [
@@ -67,6 +67,21 @@ export const asyncRouterMap = [
                 }
               }
             ]
+          }
+        ]
+      },
+      {
+        path: '/project',
+        name: 'project',
+        component: PageView,
+        redirect: '/project/list',
+        meta: { title: '项目管理', icon: 'profile' },
+        children: [
+          {
+            path: '/project/list',
+            name: 'ProjectList',
+            component: () => import('@/views/project/index'),
+            meta: { title: '项目列表' }
           }
         ]
       }

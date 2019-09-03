@@ -11,7 +11,7 @@ const getTasks = options => {
     const pass = Mock.mock('@integer(10, 300)')
     const fail = total - pass
     arr.push({
-      id: i,
+      id: i + 1,
       name: Mock.mock('@ctitle(3, 6)'),
       success: Mock.mock('@boolean'),
       total,

@@ -66,7 +66,7 @@
                     <div slot="description" class="card-description">{{ item.description }}</div>
                   </a-card-meta>
                   <div class="project-item">
-                    <a>{{ item.group.name }}</a>
+                    <a>{{ item.team.name }}</a>
                     <span class="datetime">{{ moment(item.createTime).fromNow() }}</span>
                   </div>
                 </a-card>
@@ -187,7 +187,7 @@ export default {
         that.totals.tasks = data.tasks.toString()
       }
       function processProjects (resp) {
-        that.projects = resp.data
+        that.projects = resp.data.data
       }
       function processTasks (resp) {
         that.activities = resp.data
