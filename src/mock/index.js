@@ -8,6 +8,8 @@ if (process.env.NODE_ENV !== 'production' || process.env.VUE_APP_PREVIEW === 'tr
   require('./services/auth')
   require('./services/user')
   require('./services/statistic')
+  require('./services/case')
+  require('./services/api')
   require('./services/project')
   require('./services/task')
 

@@ -1,11 +1,7 @@
 <template>
   <div class="user-wrapper">
     <div class="content-box">
-      <a
-        href="https://pro.loacg.com/docs/getting-started"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
+      <a href="https://github.com/firefang" target="_blank" rel="noopener noreferrer">
         <span class="action">
           <a-icon type="question-circle-o"></a-icon>
         </span>

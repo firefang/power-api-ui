@@ -23,6 +23,22 @@ export const builder = (data, message, code = 0, headers = {}) => {
   return responseBody
 }
 
+export const pageBuilder = (options, dataFunc) => {
+  const params = getQueryParameters(options)
+  const number = parseInt(params.page)
+  const size = parseInt(params.size)
+  const arr = []
+  for (let i = 0; i < size; ++i) {
+    arr.push(dataFunc(i))
+  }
+  return builder({
+    number,
+    size,
+    totalElements: 100,
+    content: arr
+  })
+}
+
 export const getQueryParameters = options => {
   const url = options.url
   const search = url.split('?')[1]

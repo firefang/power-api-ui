@@ -13,14 +13,18 @@ const info = () => {
     avatar: avatarUrl
   }
   const roles = [{ id: 1, name: '超级管理员' }]
+  const num1 = Mock.mock('@integer(0,3)')
+  for (let i = 0; i < num1; ++i) {
+    roles.push({ id: i + 2, name: `${Mock.mock('@ctitle(2, 4)')}工程师` })
+  }
   userInfo.roles = roles
 
   const permissions = []
   userInfo.permissions = permissions
 
-  const num = Mock.Random.integer(1, 6)
+  const num2 = Mock.Random.integer(1, 6)
   const teams = []
-  for (let i = 0; i < num; ++i) {
+  for (let i = 0; i < num2; ++i) {
     teams.push({
       id: i,
       name: `${Mock.mock('@ctitle(3, 5)')}组`

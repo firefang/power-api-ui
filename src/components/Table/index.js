@@ -115,7 +115,7 @@ export default {
           showSizeChanger: this.showSizeChanger
         })) ||
       false
-    console.log('this.localPagination', this.localPagination)
+    // console.log('this.localPagination', this.localPagination)
     this.needTotalList = this.initTotalList(this.columns)
     this.loadData()
   },
@@ -169,7 +169,6 @@ export default {
           ...filters
         }
       )
-      console.log('parameter', parameter)
       const result = this.data(parameter)
       // 对接自己的通用数据接口需要修改下方代码中的 r.pageNo, r.totalCount, r.data
       // eslint-disable-next-line
@@ -181,8 +180,8 @@ export default {
           this.localPagination =
             (this.showPagination &&
               Object.assign({}, this.localPagination, {
-                current: r.pageNo, // 返回结果中的当前分页数
-                total: r.totalCount, // 返回结果中的总记录数
+                current: r.number, // 返回结果中的当前分页数
+                total: r.totalElements, // 返回结果中的总记录数
                 showSizeChanger: this.showSizeChanger,
                 pageSize:
                   (pagination && pagination.pageSize) ||
@@ -191,7 +190,7 @@ export default {
             false
           // 为防止删除数据后导致页面当前页面数据长度为 0 ,自动翻页到上一页
           if (
-            r.data.length === 0 &&
+            r.content.length === 0 &&
             this.showPagination &&
             this.localPagination.current > 1
           ) {
@@ -205,15 +204,15 @@ export default {
           try {
             if (
               ['auto', true].includes(this.showPagination) &&
-              r.totalCount <= r.pageNo * this.localPagination.pageSize
+              r.totalElements <= r.number * this.localPagination.pageSize
             ) {
               this.localPagination.hideOnSinglePage = true
             }
           } catch (e) {
             this.localPagination = false
           }
-          console.log('loadData -> this.localPagination', this.localPagination)
-          this.localDataSource = r.data // 返回结果中的数组数据
+          // console.log('loadData -> this.localPagination', this.localPagination)
+          this.localDataSource = r.content // 返回结果中的数组数据
           this.localLoading = false
         })
       }
@@ -336,7 +335,7 @@ export default {
       if (k === 'rowSelection') {
         if (showAlert && this.rowSelection) {
           // 如果需要使用alert，则重新绑定 rowSelection 事件
-          console.log('this.rowSelection', this.rowSelection)
+          // console.log('this.rowSelection', this.rowSelection)
           props[k] = {
             ...this.rowSelection,
             selectedRows: this.selectedRows,

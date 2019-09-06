@@ -74,14 +74,21 @@ export const asyncRouterMap = [
         path: '/project',
         name: 'project',
         component: PageView,
-        redirect: '/project/list',
         meta: { title: '项目管理', icon: 'profile' },
+        redirect: '/project/list',
         children: [
           {
             path: '/project/list',
             name: 'ProjectList',
             component: () => import('@/views/project/index'),
             meta: { title: '项目列表' }
+          },
+          {
+            path: '/project/:id',
+            name: 'ProjectDetail',
+            component: () => import('@/views/project/ProjectDetail'),
+            hidden: true,
+            meta: { title: '项目详情' }
           }
         ]
       }

@@ -6,20 +6,14 @@
         <span class="welcome-text">，{{ welcome }}</span>
       </div>
       <div>
-        {{ userInfo.roles[0].name }}
-        <a-tooltip placement="bottom" v-if="userInfo.roles.length > 1">
+        <a-tooltip placement="bottom">
           <template slot="title">
             <span>{{ userInfo.roles.map(r => r.name).join('、') }}</span>
           </template>
-          ...
-        </a-tooltip>
-        &nbsp;|&nbsp;
-        {{ userInfo.teams[0].name }}
-        <a-tooltip placement="bottom" v-if="userInfo.teams.length > 1">
-          <template slot="title">
-            <span>{{ userInfo.teams.map(t => t.name).join('、') }}</span>
-          </template>
-          ...
+          {{ userInfo.roles.filter((currentValue, index, arr) => index &lt; 3).map(r => r.name).join('、') }}
+          <span
+            v-if="userInfo.roles.length > 3"
+          >...</span>
         </a-tooltip>
       </div>
     </div>
@@ -61,7 +55,7 @@
                         size="small"
                         :style="{ backgroundColor: colorList[index % colorList.length]}"
                       >{{ item.name.charAt(0) }}</a-avatar>
-                      <a>{{ item.name }}</a>
+                      <router-link :to="`/project/${item.id}`">{{ item.name }}</router-link>
                     </div>
                     <div slot="description" class="card-description">{{ item.description }}</div>
                   </a-card-meta>
@@ -187,7 +181,7 @@ export default {
         that.totals.tasks = data.tasks.toString()
       }
       function processProjects (resp) {
-        that.projects = resp.data.data
+        that.projects = resp.data.content
       }
       function processTasks (resp) {
         that.activities = resp.data

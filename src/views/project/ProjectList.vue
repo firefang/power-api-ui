@@ -42,7 +42,7 @@
     </div>
 
     <div class="table-operator">
-      <a-button type="primary" icon="plus">新建</a-button>
+      <a-button type="primary" icon="plus" @click="$refs.createProjectModal.open()">新建</a-button>
     </div>
 
     <s-table
@@ -52,32 +52,47 @@
       :columns="columns"
       :data="loadData"
       showPagination="auto"
-      :pageSize="20"
+      :pageSize="15"
     >
+      <router-link
+        slot="name"
+        slot-scope="text, record"
+        :to="{path: `/project/${record.id}`, query: {name: text}}"
+      >{{text}}</router-link>
       <span slot="description" slot-scope="text">
-        <ellipsis :length="20" tooltip>{{ text }}</ellipsis>
+        <ellipsis :length="30" tooltip>{{ text }}</ellipsis>
       </span>
 
       <span slot="action" slot-scope="text, record">
         <template>
-          <a @click="handleEdit(record)">修改</a>
+          <a @click="$refs.editProjectModal.open(record)">修改</a>
           <a-divider type="vertical" />
-          <a @click="handleDelete(record)">删除</a>
+          <a-popconfirm title="是否删除该项目？" @confirm="handleDelete(record)" okText="是" cancelText="否">
+            <a>删除</a>
+          </a-popconfirm>
         </template>
       </span>
     </s-table>
+
+    <!-- 对话框 -->
+    <create-project-modal ref="createProjectModal" @ok="handleCreateProjectOK" />
+    <edit-project-modal ref="editProjectModal" @ok="handleEditProjectOK" />
   </a-card>
 </template>
 
 <script>
 import { Ellipsis, STable } from '@/components'
 import { getProjects } from '@/api/project'
+import CreateProjectModal from './modal/CreateProjectModal'
+import EditProjectModal from './modal/EditProjectModal'
 
 export default {
   name: 'ProjectList',
   components: {
     Ellipsis,
-    STable
+    STable,
+    CreateProjectModal,
+    EditProjectModal
   },
   data () {
     return {
@@ -95,6 +110,7 @@ export default {
         {
           title: '名称',
           dataIndex: 'name',
+          scopedSlots: { customRender: 'name' },
           sorter: true
         },
         {
@@ -120,22 +136,25 @@ export default {
       ],
       // 加载数据方法 必须为 Promise 对象
       loadData: parameter => {
-        console.log('loadData.parameter', parameter)
-        return getProjects(Object.assign(parameter, this.queryParam)).then(resp => {
+        const pageParam = { page: parameter.pageNo, size: parameter.pageSize }
+        return getProjects(Object.assign(pageParam, this.queryParam)).then(resp => {
           return resp.data
         })
       }
     }
   },
   methods: {
-    handleEdit (record) {
-      console.log(record)
-    },
     handleDelete (record) {
       console.log(record)
     },
     toggleAdvanced () {
       this.advanced = !this.advanced
+    },
+    handleCreateProjectOK () {
+
+    },
+    handleEditProjectOK () {
+
     }
   }
 }
