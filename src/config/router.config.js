@@ -84,11 +84,33 @@ export const asyncRouterMap = [
             meta: { title: '项目列表' }
           },
           {
-            path: '/project/:id',
+            path: '/project/:projectId',
             name: 'ProjectDetail',
             component: () => import('@/views/project/ProjectDetail'),
             hidden: true,
-            meta: { title: '项目详情' }
+            meta: { title: '项目详情' },
+            // 在代码中跳转
+            // redirect: '/project/:projectId/info',
+            children: [
+              {
+                path: '/project/:projectId/info',
+                name: 'ProjectInfo',
+                component: () => import('@/views/project/ProjectInfo'),
+                meta: { title: '项目信息' }
+              },
+              {
+                path: '/project/:projectId/api/info/:apiId',
+                name: 'ApiInfo',
+                component: () => import('@/views/project/ApiInfo'),
+                meta: { title: '接口信息' }
+              },
+              {
+                path: '/project/:projectId/api/:apiId/case/info/:caseId',
+                name: 'CaseInfo',
+                component: () => import('@/views/project/CaseInfo'),
+                meta: { title: '案例信息' }
+              }
+            ]
           }
         ]
       }
