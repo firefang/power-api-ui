@@ -89,8 +89,9 @@ export const asyncRouterMap = [
             component: () => import('@/views/project/ProjectDetail'),
             hidden: true,
             meta: { title: '项目详情' },
-            // 在代码中跳转
-            // redirect: '/project/:projectId/info',
+            redirect: to => {
+              return `/project/${to.params.projectId}/info`
+            },
             children: [
               {
                 path: '/project/:projectId/info',

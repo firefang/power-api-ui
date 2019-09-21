@@ -9,10 +9,12 @@ const api = {
   GetTags: '/statistic/tags',
   // projects
   GetProjects: '/projects',
+  GetProjectNameById: projectId => `/projects/${projectId}/name`,
   // apis
   GetApisByProjectId: projectId => `/projects/${projectId}/apis`,
   // cases
-  GetCasesByApiId: (projectId, apiId) => `/projects/${projectId}/apis/${apiId}/cases`,
+  GetCasesByApiId: (projectId, apiId) =>
+    `/projects/${projectId}/apis/${apiId}/cases`,
   // tasks
   GetTasks: '/tasks'
 }

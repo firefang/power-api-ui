@@ -54,11 +54,7 @@
       showPagination="auto"
       :pageSize="15"
     >
-      <router-link
-        slot="name"
-        slot-scope="text, record"
-        :to="{path: `/project/${record.id}`, query: {name: text}}"
-      >{{text}}</router-link>
+      <router-link slot="name" slot-scope="text, record" :to="`/project/${record.id}`">{{text}}</router-link>
       <span slot="description" slot-scope="text">
         <ellipsis :length="30" tooltip>{{ text }}</ellipsis>
       </span>

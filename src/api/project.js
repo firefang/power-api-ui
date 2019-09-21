@@ -11,3 +11,10 @@ export function getProjects (params) {
     params: params
   })
 }
+
+export function getProjectNameById (projectId) {
+  return axios({
+    url: api.GetProjectNameById(projectId),
+    method: 'get'
+  })
+}

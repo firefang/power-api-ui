@@ -28,6 +28,7 @@
 
 <script>
 import { RouteView } from '@/layouts'
+import { getProjectNameById } from '@/api/project'
 import { getApisByProjectId } from '@/api/api'
 import { getCasesByApiId } from '@/api/case'
 
@@ -40,7 +41,6 @@ export default {
     return {
       spinning: true,
       root: null,
-      name: null,
       treeData: [],
       expandedKeys: []
     }
@@ -81,18 +81,19 @@ export default {
     onTreeSelect (selectedKeys, e) {
       const { dataRef } = e.node
       if (!e.selected) {
+        // 禁止取消选择
         selectedKeys.push(dataRef.key)
       } else {
         const { id } = dataRef
         switch (dataRef.type) {
           case 'p':
-            this.$router.push({ name: 'ProjectInfo', params: { projectId: id }, query: { name: this.name } })
+            this.$router.push({ name: 'ProjectInfo', params: { projectId: id } })
             break
           case 'a':
-            this.$router.push({ name: 'ApiInfo', params: { projectId: this.root.id, apiId: id }, query: { name: this.name } })
+            this.$router.push({ name: 'ApiInfo', params: { projectId: this.root.id, apiId: id } })
             break
           case 'c':
-            this.$router.push({ name: 'CaseInfo', params: { projectId: this.root.id, apiId: dataRef.apiId, caseId: id }, query: { name: this.name } })
+            this.$router.push({ name: 'CaseInfo', params: { projectId: this.root.id, apiId: dataRef.apiId, caseId: id } })
             break
           default:
             break
@@ -100,11 +101,14 @@ export default {
       }
     },
     initTreeData (projectId) {
-      getApisByProjectId(projectId)
-        .then(resp => {
-          this.name = this.$route.query.name
-          this.root = { id: this.$route.params.projectId, title: this.name, key: 'root', type: 'p', scopedSlots: { icon: 'project' } }
-          this.root.children = resp.data.map(d => {
+      const p1 = getProjectNameById(projectId)
+      const p2 = getApisByProjectId(projectId)
+      Promise.all([p1, p2])
+        .then(results => {
+          const name = results[0].data
+          const apis = results[1].data
+          this.root = { id: this.$route.params.projectId, title: name, key: 'root', type: 'p', scopedSlots: { icon: 'project' } }
+          this.root.children = apis.map(d => {
             return {
               id: d.id,
               title: d.name,
@@ -115,9 +119,6 @@ export default {
           })
           this.treeData.push(this.root)
           this.expandedKeys.push('root')
-          if (this.$route.name !== 'ProjectInfo') {
-            this.$router.replace({ name: 'ProjectInfo', params: { projectId: this.root.id }, query: { name: this.name } })
-          }
         })
         .catch(e => e)
         .finally(() => {
