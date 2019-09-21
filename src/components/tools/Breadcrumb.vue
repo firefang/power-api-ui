@@ -3,7 +3,7 @@
     <a-breadcrumb-item v-for="(item, index) in breadList" :key="item.name">
       <router-link
         v-if="item.name != name && index != 1"
-        :to="{ path: item.path === '' ? '/' : item.path }"
+        :to="{ path: item.path === '' ? '/' : pathCompile(item.path) }"
       >{{ item.meta.title }}</router-link>
       <span v-else>{{ item.meta.title }}</span>
     </a-breadcrumb-item>
@@ -11,6 +11,8 @@
 </template>
 
 <script>
+import pathToRegexp from 'path-to-regexp'
+
 export default {
   data () {
     return {
@@ -31,6 +33,11 @@ export default {
         // item.name !== 'index' && this.breadList.push(item)
         this.breadList.push(item)
       })
+    },
+    pathCompile (path) {
+      const { params } = this.$route
+      let toPath = pathToRegexp.compile(path)
+      return toPath(params)
     }
   },
   watch: {
